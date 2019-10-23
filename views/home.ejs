@@ -1,0 +1,47 @@
+<% include ./partials/header.ejs %>
+
+
+
+
+<div class="container-fluid">
+
+	<div class="row">
+
+		<div class="col-xs-12 col-md-8">
+
+			<img src="img/map-placeholder.png" alt="map" class="img-responsive">
+
+		</div>
+
+
+		<div class="col-xs-12  col-md-4">
+
+			<div class="row">
+
+			
+
+
+				<% recycleCenters.forEach((center) =>{ %>
+					<div class="col-xs-12 col-md-12 col-lg-12" style="border:1px solid; height:200px;">
+						<%= center.name %>
+
+						<%= center.location %>
+
+					</div>
+
+				<% }); %>
+
+				
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+
+
+</div>
+
+<% include ./partials/footer.ejs %>
