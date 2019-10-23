@@ -74,15 +74,18 @@ app.get("/search", (req,res)=>{
 
 app.get("/item/:id", (req,res)=>{
 
+	//this id is a upc code that can feed into earth911
 	let item_id = req.params.id;
 
-	datakick.item(item_id).then(data => {
-  		console.log(JSON.stringify(data));
+	datakick.item(item_id).then(itemData => {
+  		console.log(JSON.stringify(itemData));
+  		res.render("item", {itemData:itemData})
 	}).catch(error => {
   		console.log(error.message);
+  		res.render("item", {itemData:[]})
 	});
 
-	res.send("show");
+	
 
 });
 
@@ -100,4 +103,5 @@ app.listen(process.env.PORT || 3000, ()=>{
   console.log("recycle express app");
   //https://frozen-cliffs-78336.herokuapp.com/
   //https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-the-app
+  //https://stackoverflow.com/questions/27810419/git-push-heroku-master-is-still-asking-for-authentication
 });
