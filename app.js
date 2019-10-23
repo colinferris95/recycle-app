@@ -98,4 +98,6 @@ app.get("/login", (req,res)=>{
 
 app.listen(process.env.PORT || 3000, ()=>{
   console.log("recycle express app");
+  //https://frozen-cliffs-78336.herokuapp.com/
+  //https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-the-app
 });
