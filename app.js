@@ -11,6 +11,11 @@ const bodyParser = require("body-parser");
 
 const datakick = require('datakick');
 
+const request = require("request");
+
+const dotenv = require('dotenv');
+dotenv.config();
+
 
 app.use(bodyParser.urlencoded({extended:true}));
 
@@ -59,14 +64,34 @@ app.get("/search", (req,res)=>{
 
 	let searchTerm = req.query.searchTerm;
 
+	console.log(searchTerm);
+	if (searchTerm == undefined){
+		res.render("search", {searchResults:[]});
 
-	datakick.query(searchTerm).then(searchResults => {
-  		//console.log(JSON.stringify(searchResults));
-  		res.render("search", {searchResults:searchResults});
-	}).catch(error => {
-  		console.log(error.message);
-  		res.render("search", {searchResults:[]});
-	});
+	}
+	else{
+
+	
+
+		request("http://api.earth911.com/earth911.searchMaterials?api_key="+ process.env.API_KEY +"&query=" + searchTerm, (error,response,body) =>{
+
+
+			console.log(searchTerm);
+			if(!error && response.statusCode == 200){
+				let searchResults = JSON.parse(body);
+				//res.send(results["Search"][0]["Title"]);
+				//res.render("results", {data: data});
+				console.log(searchResults);
+				res.render("searchResults", {searchResults:searchResults});
+
+			}
+
+
+
+		});
+
+	}
+
 
 	
 });
@@ -75,7 +100,31 @@ app.get("/search", (req,res)=>{
 app.get("/item/:id", (req,res)=>{
 
 	//this id is a upc code that can feed into earth911
-	let item_id = req.params.id;
+	//now going to be material id
+	let itemId = req.params.id;
+
+
+
+
+
+	request("http://api.earth911.com/earth911.getMaterials?api_key="+ process.env.API_KEY , (error,response,body) =>{
+
+
+		
+			if(!error && response.statusCode == 200){
+				let getResults = JSON.parse(body);
+				//res.send(results["Search"][0]["Title"]);
+				//res.render("results", {data: data});
+				console.log(getResults);
+				res.render("item", {getResults:getResults, itemId:itemId});
+
+			}
+
+
+
+		});
+
+	/*
 
 	datakick.item(item_id).then(itemData => {
   		console.log(JSON.stringify(itemData));
@@ -84,6 +133,7 @@ app.get("/item/:id", (req,res)=>{
   		console.log(error.message);
   		res.render("item", {itemData:[]})
 	});
+	*/
 
 	
 

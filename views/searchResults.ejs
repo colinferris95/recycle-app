@@ -59,6 +59,20 @@
 
 
 
+				<% searchResults.result.forEach((search) =>{ %>
+					<div class="col-xs-12 col-md-12 col-lg-12" style="border:1px solid; height:200px;">
+
+						<%= search.description %>
+						
+						<%= search.material_id %>
+
+						<button><a href="/item/<%=search.material_id%>">More Information </a></button>
+					</div>
+
+				<% });  %>
+
+
+
 				
 
 				

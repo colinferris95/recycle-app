@@ -3,9 +3,28 @@
 
 <h1>Item Show</h1>
 
-<%= itemData.gtin14%>
-<%= itemData.brand_name%>
-<%= itemData.name%>
+
+<% getResults.result.forEach((get) =>{ %>
+
+
+
+	<% if (get.material_id == itemId){ %>
+
+
+		<%= get.description %>
+
+
+		<%= get.long_description %>
+
+
+		<button>Recycle</button>
+
+
+
+	<% } %>
+
+
+<% }); %>
 
 
 <% include ./partials/footer.ejs %>
