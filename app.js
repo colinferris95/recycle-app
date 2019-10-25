@@ -2,6 +2,8 @@ const path = require("path");
 
 const express = require("express");
 
+const methodOverride = require("method-override");
+
 const app = express();
 
 const dir = path.join(__dirname, 'public');
@@ -20,6 +22,9 @@ dotenv.config();
 app.use(bodyParser.urlencoded({extended:true}));
 
 app.use(express.static(dir));
+
+
+app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
 
@@ -41,6 +46,11 @@ let recycleCenters = [
 
 ];
 */
+
+let userItems = [
+	{material_id:123, description:"item description", long_description:"item long description"}
+
+]
 
 
 app.get("/",(req,res)=>{
@@ -139,6 +149,23 @@ app.get("/item/:id", (req,res)=>{
 
 });
 
+
+app.put("/item/:id", (req,res)=>{
+
+	//console.log(req.body.material_id);
+	//console.log(req.body.description);
+	//console.log(req.body.long_description);
+
+	userItems.push({material_id:req.body.material_id,description:req.body.description,long_description:req.body.long_description});
+
+	console.log(userItems);
+
+});
+
+
+
+
+
 app.get("/local", (req,res)=>{
 
 	res.send("local");
@@ -154,4 +181,5 @@ app.listen(process.env.PORT || 3000, ()=>{
   //https://frozen-cliffs-78336.herokuapp.com/
   //https://devcenter.heroku.com/articles/getting-started-with-nodejs#deploy-the-app
   //https://stackoverflow.com/questions/27810419/git-push-heroku-master-is-still-asking-for-authentication
+  //https://medium.com/the-node-js-collection/making-your-node-js-work-everywhere-with-environment-variables-2da8cdf6e786
 });

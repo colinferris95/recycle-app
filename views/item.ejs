@@ -17,7 +17,22 @@
 		<%= get.long_description %>
 
 
-		<button>Recycle</button>
+		
+
+
+		<form action="/item/<%=get.material_id%>?_method=PUT" method="post">
+
+
+			<input type="hidden" name="material_id" value="<%= get.material_id %>">
+
+			<input type="hidden" name="description" value="<%= get.description %>">
+
+			<input type="hidden" name="long_description" value="<%= get.long_description %>">
+
+
+
+			<input type="submit" name="submit">
+		</form>
 
 
 
