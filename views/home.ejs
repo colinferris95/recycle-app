@@ -21,11 +21,14 @@
 			
 
 
-				<% recycleCenters.forEach((center) =>{ %>
+				<% recycleCenters.result.forEach((center) =>{ %>
 					<div class="col-xs-12 col-md-12 col-lg-12" style="border:1px solid; height:200px;">
-						<%= center.name %>
+						<%= center.description %>
 
-						<%= center.location %>
+						<%= center.distance %>
+
+
+						<%= center.location_id %>
 
 					</div>
 

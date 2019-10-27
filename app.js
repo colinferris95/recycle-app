@@ -48,25 +48,49 @@ let recycleCenters = [
 */
 
 let userItems = [
-	{material_id:123, description:"item description", long_description:"item long description"}
+	
 
 ]
 
 
 app.get("/",(req,res)=>{
 
-	res.render("home.ejs", {recycleCenters:recycleCenters});
+	let lat = 40.74337258642992;
+
+	let long = -73.68065358043847;
+
+
+
+	//take in material id from search page
+	
+	//"http://api.earth911.com/earth911.searchLocations?api_key=ced7f0cd743c0b5d&latitude=40.74337258642992&longitude=-73.68065358043847&material_id=60&max_distance=5"
+	
+	request("http://api.earth911.com/earth911.searchLocations?api_key="+ process.env.API_KEY +"&latitude=" + lat + "&longitude=" + long, (error,response,body) =>{
+
+
+		
+			if(!error && response.statusCode == 200){
+				let recycleCenters = JSON.parse(body);
+				//res.send(results["Search"][0]["Title"]);
+				//res.render("results", {data: data});
+				console.log(recycleCenters);
+				res.render("home.ejs", {recycleCenters:recycleCenters});
+
+			}
+
+
+
+		});
+
+
+
+	
 
 
 
 });
 
 
-app.get("/progress",(req,res)=>{
-
-	res.send("progress");
-
-});
 
 app.get("/search", (req,res)=>{
 
@@ -156,14 +180,19 @@ app.put("/item/:id", (req,res)=>{
 	//console.log(req.body.description);
 	//console.log(req.body.long_description);
 
-	userItems.push({material_id:req.body.material_id,description:req.body.description,long_description:req.body.long_description});
 
-	console.log(userItems);
+	userItems.push({material_id:req.body.material_id,description:req.body.description,long_description:req.body.long_description, amount:1});
+
+	res.redirect("/progress");
 
 });
 
 
+app.get("/progress",(req,res)=>{
 
+	res.render("progress", {userItems:userItems});
+
+});
 
 
 app.get("/local", (req,res)=>{

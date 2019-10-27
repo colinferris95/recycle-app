@@ -1,0 +1,19 @@
+<% include ./partials/header.ejs %>
+
+
+<h1>Progress/History</h1>
+
+
+<% userItems.forEach((item) =>{ %>
+
+
+
+	<%= item.description %>
+	<%= item.amount %>
+	<br>
+
+
+<% }); %>
+
+
+<% include ./partials/footer.ejs %>
