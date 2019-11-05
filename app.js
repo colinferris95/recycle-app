@@ -53,7 +53,14 @@ let userItems = [
 ]
 
 
-app.get("/",(req,res)=>{
+app.get("/", (req,res)=>{
+
+
+	res.redirect("home");
+});
+
+
+app.get("/home",(req,res)=>{
 
 	let lat = 40.74337258642992;
 
@@ -90,7 +97,76 @@ app.get("/",(req,res)=>{
 });
 
 
-app.post("/lookup", (req,res)=>{
+
+app.post("/home", (req,res)=>{
+
+
+	
+
+
+
+	
+	
+
+
+
+	let zip_code = req.body.zip;
+
+
+
+	let postal_query = "http://api.earth911.com/earth911.getPostalData?api_key="+ process.env.API_KEY +"&country=US&postal_code=" + zip_code;
+	
+	request(postal_query , (error,response,body) =>{
+
+
+
+			if(!error && response.statusCode == 200){
+				let postal_info = JSON.parse(body);
+				
+			
+
+				let lat = postal_info.result.latitude;
+
+				let long = postal_info.result.longitude;
+
+
+				let query = "http://api.earth911.com/earth911.searchLocations?api_key="+ process.env.API_KEY +"&latitude=" + lat + "&longitude=" + long;
+	
+				request(query , (error,response,body) =>{
+
+
+					
+						if(!error && response.statusCode == 200){
+							let recycleCenters = JSON.parse(body);
+							//res.send(results["Search"][0]["Title"]);
+							//res.render("results", {data: data});
+							//console.log(recycleCenters);
+							res.render("home.ejs", {recycleCenters:recycleCenters});
+
+						}
+
+
+
+				});
+
+
+				
+
+			}
+
+
+
+	});
+	
+
+
+
+
+
+});
+
+
+app.post("/lookupMaterial", (req,res)=>{
 
 
 	
@@ -157,6 +233,10 @@ app.post("/lookup", (req,res)=>{
 
 
 });
+
+
+
+
 
 
 
