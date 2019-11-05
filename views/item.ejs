@@ -17,6 +17,14 @@
 		<%= get.long_description %>
 
 
+		<form action="/lookup" method="post">
+			<input type="hidden" name="material_id" value="<%= get.material_id %>">
+
+			<label>Check where to recycle </label>
+			<input type="text" name="zip" placeholder="Zip Code">
+			<input type="submit" name="submit">
+
+		</form>	
 		
 
 

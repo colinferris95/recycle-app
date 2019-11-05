@@ -59,13 +59,15 @@ app.get("/",(req,res)=>{
 
 	let long = -73.68065358043847;
 
+	let material_id;
+
+	console.log(req.query.material_id);
 
 
-	//take in material id from search page
+
+	let query = "http://api.earth911.com/earth911.searchLocations?api_key="+ process.env.API_KEY +"&latitude=" + lat + "&longitude=" + long;
 	
-	//"http://api.earth911.com/earth911.searchLocations?api_key=ced7f0cd743c0b5d&latitude=40.74337258642992&longitude=-73.68065358043847&material_id=60&max_distance=5"
-	
-	request("http://api.earth911.com/earth911.searchLocations?api_key="+ process.env.API_KEY +"&latitude=" + lat + "&longitude=" + long, (error,response,body) =>{
+	request(query , (error,response,body) =>{
 
 
 		
@@ -73,7 +75,7 @@ app.get("/",(req,res)=>{
 				let recycleCenters = JSON.parse(body);
 				//res.send(results["Search"][0]["Title"]);
 				//res.render("results", {data: data});
-				console.log(recycleCenters);
+				//console.log(recycleCenters);
 				res.render("home.ejs", {recycleCenters:recycleCenters});
 
 			}
@@ -84,8 +86,74 @@ app.get("/",(req,res)=>{
 
 
 
+
+});
+
+
+app.post("/lookup", (req,res)=>{
+
+
 	
 
+
+
+	
+	
+
+	let material_id = req.body.material_id;
+
+	let zip_code = req.body.zip;
+
+
+
+	let postal_query = "http://api.earth911.com/earth911.getPostalData?api_key="+ process.env.API_KEY +"&country=US&postal_code=" + zip_code;
+	
+	request(postal_query , (error,response,body) =>{
+
+
+
+			if(!error && response.statusCode == 200){
+				let postal_info = JSON.parse(body);
+				
+			
+
+				let lat = postal_info.result.latitude;
+
+				let long = postal_info.result.longitude;
+
+
+				let material_query = "http://api.earth911.com/earth911.searchLocations?api_key="+ process.env.API_KEY +"&latitude=" + lat + "&longitude=" + long + "&material_id=" + material_id;
+	
+				request(material_query , (error,response,body) =>{
+
+
+					
+						if(!error && response.statusCode == 200){
+							let recycleCenters = JSON.parse(body);
+							//res.send(results["Search"][0]["Title"]);
+							//res.render("results", {data: data});
+							//console.log(recycleCenters);
+							res.render("home.ejs", {recycleCenters:recycleCenters});
+
+						}
+
+
+
+				});
+
+
+				
+
+			}
+
+
+
+	});
+	
+
+
+
+	
 
 
 });
